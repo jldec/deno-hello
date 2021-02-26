@@ -1,24 +1,60 @@
 import parse5 from "https://cdn.skypack.dev/parse5?dts";
 
-const url = Deno.args[0];
-const res = await fetch(url);
-const html = await res.text();
-const document = parse5.parse(html);
+const rootUrl = Deno.args[0];
+if (!rootUrl) exit(1, `Please provide a URL`);
 
-scan(document, 'a', node => {
-  console.log(attr(node, 'href'));
-});
+// scan all embedded urls for the same origin
+const rootOrigin = (new URL(rootUrl)).origin;
 
-scan(document, 'img', node => {
-  console.log(attr(node, 'src'));
-});
+// track results in here
+const urlMap = {};
+
+await checkUrl(rootUrl, rootUrl);
+exit(0, Object.entries(urlMap).filter( kv => kv[1] !== 'OK'));
+
+// recursively checks url and same-origin urls inside
+// blocks until done
+async function checkUrl(url, base) {
+  try {
+    // parse the url relative to base
+    const urlObj = new URL(url, base);
+
+    // ignore query params and hash
+    const href = urlObj.origin + urlObj.pathname;
+
+    // only process same-origin urls
+    if (!urlMap[href] && urlObj.origin === rootOrigin) {
+
+      // fetch from href
+      urlMap[href] = 'pending';
+      const res = await fetch(href);
+      if (!res.ok) return urlMap[href] = { status: res.status, in: base }
+      urlMap[href] = 'OK';
+
+      // parse response
+      console.log('parsing', href);
+      const html = await res.text();
+      const document = parse5.parse(html);
+
+      // scan for <a> tags and call checkURL for each href
+      const promises = [];
+      scan(document, 'a', node => {
+        promises.push(checkUrl(attr(node, 'href'), href));
+      });
+      await Promise.all(promises);
+    }
+  }
+  catch(err) {
+    urlMap[url] =  { error: err.message, in: base };
+  }
+}
 
 // return value of attr with name for a node
 function attr(node, name) {
   return node.attrs.find( attr => attr.name === name )?.value;
 }
 
-// recursive scan
+// recursive DOM scan
 // calls fn(node) on nodes matching tagName
 function scan(node, tagName, fn) {
   if (node?.tagName === tagName) {
@@ -28,4 +64,9 @@ function scan(node, tagName, fn) {
   for (const childNode of node.childNodes) {
     scan(childNode, tagName, fn);
   }
+}
+
+function exit(code, msg) {
+  console.log(msg);
+  Deno.exit(code);
 }

@@ -14,7 +14,7 @@
         "${file}"
       ],
       "attachSimplePort": 9229,
-      "console": "integratedTerminal"
+      "outputCapture": "std"
     }
   ]
 }

@@ -1,20 +1,25 @@
-import parse5 from "https://cdn.skypack.dev/parse5?dts";
+import parse5 from 'https://cdn.skypack.dev/parse5?dts';
 
 const rootUrl = Deno.args[0];
-if (!rootUrl) exit(1, `Please provide a URL`);
+if (!rootUrl) exit(1, 'Please provide a URL');
 
-// scan all embedded urls for the same origin
 const rootOrigin = (new URL(rootUrl)).origin;
 
-// track results in here
-const urlMap = {};
+const urlMap = {}; // tracks visited urls
 
-await checkUrl(rootUrl, rootUrl);
-exit(0, Object.entries(urlMap).filter( kv => kv[1] !== 'OK'));
+await checkUrl(rootUrl);
+const result = Object.entries(urlMap).filter( kv => kv[1] !== 'OK');
+
+if (result.length) {
+  exit(1, result);
+} else {
+  exit(0, '🎉 no broken links found.');
+}
 
 // recursively checks url and same-origin urls inside
-// blocks until done
+// resolves when done
 async function checkUrl(url, base) {
+  base = base || url;
   try {
     // parse the url relative to base
     const urlObj = new URL(url, base);
@@ -32,7 +37,7 @@ async function checkUrl(url, base) {
       urlMap[href] = 'OK';
 
       // parse response
-      console.log('parsing', href);
+      console.log('parsing', urlObj.pathname);
       const html = await res.text();
       const document = parse5.parse(html);
 

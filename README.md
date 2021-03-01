@@ -39,17 +39,19 @@ To run the script, call `deno run --allow-net scan.js URL`. E.g.
 
 ```txt
 $ deno run --allow-net scan.js https://jldec.me
-parsing https://jldec.me/
-parsing https://jldec.me/a-web-for-everyone
-parsing https://jldec.me/forays-from-node-to-rust
-parsing https://jldec.me/why-serverless-at-the-edge
-parsing https://jldec.me/fun-with-vercel
-parsing https://jldec.me/spring-boot-101
-parsing https://jldec.me/why-the-web-needs-better-html-editing-components
-parsing https://jldec.me/first-steps-using-cloudflare-pages
-parsing https://jldec.me/calling-rust-from-a-cloudflare-worker
-parsing https://jldec.me/about
-parsing https://jldec.me/github-actions-101
-parsing https://jldec.me/migrating-from-cjs-to-esm
+parsing /
+parsing /spring-boot-101
+parsing /getting-started-with-deno
+parsing /fun-with-vercel
+parsing /about
+parsing /first-steps-using-cloudflare-pages
+parsing /why-serverless-at-the-edge
+parsing /a-web-for-everyone
+parsing /why-the-web-needs-better-html-editing-components
+parsing /github-actions-101
+parsing /calling-rust-from-a-cloudflare-worker
+parsing /forays-from-node-to-rust
+parsing /migrating-from-cjs-to-esm
+
 🎉 no broken links found.
 ```

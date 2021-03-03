@@ -1,5 +1,9 @@
 # deno-hello
 
+Companion repo for the blog post https://jldec.me/getting-started-with-deno
+
+The scripts below are also hosted at https://deno-hello.jldec.me
+
 ### Install deno
 
 I configured my environment, and copied the latest binary from [GitHub](https://github.com/denoland/deno/releases/latest) to `~/deno/bin`.
@@ -11,10 +15,10 @@ export PATH=${PATH}:${DENO_DIR}/bin
 
 See the [Manual](https://deno.land/manual/getting_started/installation) for additional options.
 
-### Run hello.js
+### hello.js
 
 ```
-$ deno run hello.js world
+$ deno run https://deno-hello.jldec.me/hello.js world
 
 Hello Deno Tue Feb 23 2021 09:55:54 GMT+0000 (GMT) hello [ "world" ]
 -🦀-
@@ -38,19 +42,19 @@ Crawls a website, validating that all the links on the site which point to the s
 To run the script, call `deno run --allow-net scan.js URL`. E.g.
 
 ```txt
-$ deno run --allow-net scan.js https://jldec.me
+$ deno run --allow-net https://deno-hello.jldec.me/scan.js https://jldec.me
 parsing /
-parsing /spring-boot-101
 parsing /getting-started-with-deno
 parsing /fun-with-vercel
+parsing /spring-boot-101
+parsing /forays-from-node-to-rust
+parsing /why-the-web-needs-better-html-editing-components
 parsing /about
 parsing /first-steps-using-cloudflare-pages
 parsing /why-serverless-at-the-edge
 parsing /a-web-for-everyone
-parsing /why-the-web-needs-better-html-editing-components
 parsing /github-actions-101
 parsing /calling-rust-from-a-cloudflare-worker
-parsing /forays-from-node-to-rust
 parsing /migrating-from-cjs-to-esm
 
 🎉 no broken links found.

@@ -3,8 +3,8 @@
 
 var opts = module.exports = {
 
-  appUrl: 'https://jldec.de',
-  docTitle: 'deno-hello',
+  appUrl: 'https://deno-hello.jldec.me',
+  docTitle: 'deno-hello.jldec.me',
   github: 'https://github.com/jldec/deno-hello',
   copyright: 'Copyright (c) 2021 Jürgen Leschner - github.com/jldec - MIT license',
   noRobots: true, // not ok to crawl

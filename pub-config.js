@@ -7,6 +7,7 @@ var opts = module.exports = {
   docTitle: 'deno-hello',
   github: 'https://github.com/jldec/deno-hello',
   copyright: 'Copyright (c) 2021 Jürgen Leschner - github.com/jldec - MIT license',
+  noRobots: true, // not ok to crawl
 
   pkgs: [
     'pub-theme-doc',

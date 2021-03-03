@@ -2,7 +2,7 @@
 
 Companion repo for the blog post https://jldec.me/getting-started-with-deno
 
-The scripts below are also hosted at https://deno-hello.jldec.me
+The scripts below are hosted by [Cloudflare Pages](https://jldec.me/first-steps-using-cloudflare-pages) at https://deno-hello.jldec.me
 
 ### Install deno
 

@@ -1,7 +1,7 @@
-// pub-config for the deno-hello script hosting site at jldec.de
-// uses pub-theme-doc
+// pub-config for the deno-hello script hosting site at deno-hello.jldec.me
+// uses pub-server theme https://github.com/jldec/pub-theme-doc
 
-var opts = module.exports = {
+module.exports = {
 
   appUrl: 'https://deno-hello.jldec.me',
   docTitle: 'deno-hello.jldec.me',

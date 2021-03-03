@@ -42,12 +42,15 @@ async function checkUrl(url, base) {
 
       urlMap[href] = 'OK';
 
+      // check content type
+      if (!res.headers.get('content-type').match(/text\/html/i)) return;
+
       // parse response
       console.log('parsing', urlObj.pathname);
       const html = await res.text();
       const document = parse5.parse(html);
 
-      // scan for <a> tags and call checkURL for each href
+      // scan for <a> tags and call checkURL for each, with base = href
       const promises = [];
       scan(document, 'a', node => {
         promises.push(checkUrl(attr(node, 'href'), href));

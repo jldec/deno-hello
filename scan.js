@@ -1,17 +1,29 @@
+// scan.js
+// deno script to accompany blogpost at
+// https://jldec.me/getting-started-with-deno
+//
+// Crawls a website, validating that all the links on the site which
+// point to the same orgin can be fetched.
+//
+// copyright 2021, Jürgen Leschner (github/jldec) - MIT license
+
 import parse5 from 'https://cdn.skypack.dev/parse5?dts';
 
+const usage = `scan v1.0.0
+Usage: deno --allow-net scan.js URL [-R] [-q]
+  URL fully qualified URL to the start page
+  -R  scan a single file and log the links in it.
+  -q  suppress logging to stderr.
+Compiled usage: scan-arch URL [-R] [-q]
+`
+
 const rootUrl = Deno.args[0];
-if (!rootUrl) exit(1, 'Please provide a URL');
+if (!rootUrl) exit(1, usage);
 
-const recurse = !(
-  Deno.args.includes('--noRecurse') ||
-  Deno.args.includes('-R'));
+const recurse = !Deno.args.includes('-R');
+const quiet = Deno.args.includes('-q');
 
-const quiet =
-  Deno.args.includes('--quiet') ||
-  Deno.args.includes('-q');
-
-  const rootOrigin = (new URL(rootUrl)).origin;
+const rootOrigin = (new URL(rootUrl)).origin;
 
 const urlMap = {}; // tracks visited urls
 

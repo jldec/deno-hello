@@ -12,8 +12,8 @@
   },
   "scripts": {
     "pub": "pub",
-    "test": "pub -S out",
-    "generate": "pub -O -E"
+    "preview": "pub -S out",
+    "generate": "rm -r out ; pub -O -E"
   },
   "author": "Jürgen Leschner",
   "license": "MIT"

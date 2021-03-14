@@ -43,8 +43,8 @@ Outputs JSON with broken links to stdout, logs to stderr. Exits with 1 if any br
 
 Options (passed after the URL):
 
-- `--noRecurse` or `-R`: scan single file and list the links in it.
-- `--quiet` or `-q`: suppress logging the list of parsed files or links to stderr.
+- `-R`: scan single file and list the links in it.
+- `-q`: suppress logging the list of parsed files or links to stderr.
 
 To run the script, call `deno run --allow-net scan.js URL`. E.g.
 

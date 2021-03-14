@@ -39,6 +39,13 @@ Hello Deno Tue Feb 23 2021 09:55:54 GMT+0000 (GMT) hello [ "world" ]
 
 Crawls a website, validating that all the links on the site which point to the same orgin can be fetched.
 
+Outputs JSON with broken links to stdout, logs to stderr. Exits with 1 if any broken links are found.
+
+Options (passed after the URL):
+
+- `--noRecurse` or `-R`: scan single file and list the links in it.
+- `--quiet` or `-q`: suppress logging the list of parsed files or links to stderr.
+
 To run the script, call `deno run --allow-net scan.js URL`. E.g.
 
 ```txt
@@ -56,6 +63,6 @@ parsing /a-web-for-everyone
 parsing /github-actions-101
 parsing /calling-rust-from-a-cloudflare-worker
 parsing /migrating-from-cjs-to-esm
-
+13 pages scanned.
 🎉 no broken links found.
 ```

@@ -3,15 +3,32 @@ import parse5 from 'https://cdn.skypack.dev/parse5?dts';
 const rootUrl = Deno.args[0];
 if (!rootUrl) exit(1, 'Please provide a URL');
 
-const rootOrigin = (new URL(rootUrl)).origin;
+const recurse = !(
+  Deno.args.includes('--noRecurse') ||
+  Deno.args.includes('-R'));
+
+const quiet =
+  Deno.args.includes('--quiet') ||
+  Deno.args.includes('-q');
+
+  const rootOrigin = (new URL(rootUrl)).origin;
 
 const urlMap = {}; // tracks visited urls
 
-await checkUrl(rootUrl);
-const result = Object.entries(urlMap).filter( kv => kv[1] !== 'OK');
+await checkUrl(rootUrl); // dum dum dum dum ...
+console.error(Object.keys(urlMap).length, 'pages scanned.');
+
+const result = Object.entries(urlMap)
+  .filter( kv => kv[1] !== 'OK')
+  .map( kv => {
+    const o = kv[1];
+    o.url = kv[0];
+    return o;
+  });
 
 if (result.length) {
-  exit(1, result);
+  console.log(JSON.stringify(result, null, 2));
+  exit(1, result.length + ' broken link(s) found.');
 } else {
   exit(0, '🎉 no broken links found.');
 }
@@ -46,14 +63,20 @@ async function checkUrl(url, base) {
       if (!res.headers.get('content-type').match(/text\/html/i)) return;
 
       // parse response
-      console.log('parsing', urlObj.pathname);
+      if (!quiet) console.error('parsing', urlObj.pathname);
       const html = await res.text();
       const document = parse5.parse(html);
 
       // scan for <a> tags and call checkURL for each, with base = href
       const promises = [];
       scan(document, 'a', node => {
-        promises.push(checkUrl(attr(node, 'href'), href));
+        const link = attr(node, 'href');
+        if (!recurse && !quiet) {
+          console.error('link', link);
+        }
+        if (recurse && link) {
+          promises.push(checkUrl(link, href));
+        }
       });
       await Promise.all(promises);
     }
@@ -81,6 +104,6 @@ function scan(node, tagName, fn) {
 }
 
 function exit(code, msg) {
-  console.log(msg);
+  console.error(msg);
   Deno.exit(code);
 }

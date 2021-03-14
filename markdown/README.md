@@ -12,7 +12,3 @@ For details see [jldec.me/getting-started-with-deno](https://jldec.me/getting-st
 - [hello.js](hello.js) - Hello world.
 - [scan.js](scan.js) - Basic crawler to check internal links.
 
-### compiled binaries
-
-- [scan-macos](scan-macos)
-- [scan-linux](scan-linux)

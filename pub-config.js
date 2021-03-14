@@ -27,8 +27,7 @@ module.exports = {
   staticPaths: [
     { path:'.', depth:1, glob:'**/*.{js,ts}'},
     'scan-macos',
-    'scan-linux',
-    'scan-windows.exe'
+    'scan-linux'
   ],
 
 };

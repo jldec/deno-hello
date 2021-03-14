@@ -16,4 +16,3 @@ For details see [jldec.me/getting-started-with-deno](https://jldec.me/getting-st
 
 - [scan-macos](scan-macos)
 - [scan-linux](scan-linux)
-- [scan-windows.exe](scan-windows.exe)

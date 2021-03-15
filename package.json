@@ -1,6 +1,6 @@
 {
   "name": "deno-hello",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "not a published npm module",
   "main": "pub-config.js",
   "dependencies": {

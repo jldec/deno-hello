@@ -26,9 +26,10 @@ const quiet = Deno.args.includes('-q');
 const rootOrigin = (new URL(rootUrl)).origin;
 
 const urlMap = {}; // tracks visited urls
+let pageCount = 0; // counts scanned pages
 
 await checkUrl(rootUrl); // dum dum dum dum ...
-console.error(Object.keys(urlMap).length, 'pages scanned.');
+console.error(pageCount, 'pages scanned.');
 
 const result = Object.entries(urlMap)
   .filter( kv => kv[1] !== 'OK')
@@ -75,6 +76,7 @@ async function checkUrl(url, base) {
       if (!res.headers.get('content-type').match(/text\/html/i)) return;
 
       // parse response
+      pageCount++;
       if (!quiet) console.error('parsing', urlObj.pathname);
       const html = await res.text();
       const document = parse5.parse(html);

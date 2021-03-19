@@ -9,35 +9,34 @@
 
 import parse5 from 'https://cdn.skypack.dev/parse5?dts';
 
-const usage = `scan v1.0.0
+const usage = `scan v1.0.2
+
 Usage: deno --allow-net scan.js URL [-R] [-q]
-  URL fully qualified URL to the start page
+
+URL fully qualified URL to the start page
   -R  scan a single file and log the links in it.
   -q  suppress logging to stderr.
-Compiled usage: scan-arch URL [-R] [-q]
+
+Compiled usage: scan-<arch> URL [-R] [-q]
 `
 
-const rootUrl = Deno.args[0];
-if (!rootUrl) exit(1, usage);
+let rootURL;
+try { rootURL = new URL(Deno.args[0]); }
+catch(err) { exit(1, err.message + '\n\n' + usage); }
 
-const recurse = !Deno.args.includes('-R');
+const noRecurse = Deno.args.includes('-R');
 const quiet = Deno.args.includes('-q');
 
-const rootOrigin = (new URL(rootUrl)).origin;
+const rootOrigin = rootURL.origin;
 
 const urlMap = {}; // tracks visited urls
 let pageCount = 0; // counts scanned pages
 
-await checkUrl(rootUrl); // dum dum dum dum ...
+await checkURL(rootURL); // dum dum dum dum ...
 console.error(pageCount, 'pages scanned.');
 
-const result = Object.entries(urlMap)
-  .filter( kv => kv[1] !== 'OK')
-  .map( kv => {
-    const o = kv[1];
-    o.url = kv[0];
-    return o;
-  });
+const result = Object.values(urlMap)
+  .filter( value => value.status !== 'OK');
 
 if (result.length) {
   console.log(JSON.stringify(result, null, 2));
@@ -48,55 +47,63 @@ if (result.length) {
 
 // recursively checks url and same-origin urls inside
 // resolves when done
-async function checkUrl(url, base) {
-  base = base || url;
-  try {
-    // parse the url relative to base
-    const urlObj = new URL(url, base);
+async function checkURL(urlObj, base) {
+  const origin = urlObj.origin;
+  const path = urlObj.pathname;
 
-    // ignore query params and hash
-    const href = urlObj.origin + urlObj.pathname;
+  // ignore query params and hash
+  const href = origin + path;
 
-    // only process same-origin urls
-    if (!urlMap[href] && urlObj.origin === rootOrigin) {
+  // don't process the same href more than once
+  if (!urlMap[href]) {
+    const o = urlMap[href] = { url:href, status:'pending', in:base };
 
-      // fetch from href
-      urlMap[href] = 'pending';
-      const res = await fetch(href);
-
-      // bail out if fetch was not ok
-      if (!res.ok) {
-        urlMap[href] = { status: res.status, in: base };
-        return;
-      }
-
-      urlMap[href] = 'OK';
-
-      // check content type
-      if (!res.headers.get('content-type').match(/text\/html/i)) return;
-
-      // parse response
-      pageCount++;
-      if (!quiet) console.error('parsing', urlObj.pathname);
-      const html = await res.text();
-      const document = parse5.parse(html);
-
-      // scan for <a> tags and call checkURL for each, with base = href
-      const promises = [];
-      scan(document, 'a', node => {
-        const link = attr(node, 'href');
-        if (!recurse && !quiet) {
-          console.error('link', link);
-        }
-        if (recurse && link) {
-          promises.push(checkUrl(link, href));
-        }
-      });
-      await Promise.all(promises);
+    // try to make the HTTP request
+    let res;
+    try { res = await fetch(href); }
+    catch(err) {
+      o.error = err.message;
+      return;
     }
-  }
-  catch(err) {
-    urlMap[url] =  { error: err.message, in: base };
+    // bail out if fetch was not ok
+    if (!res.ok) {
+      o.status = res.status;
+      return;
+    }
+    o.status = 'OK';
+
+    // check content type
+    if (!res.headers.get('content-type').match(/text\/html/i)) {
+      if (!quiet) console.error('not parsing', urlObj.pathname, 'in', base);
+      return;
+    }
+
+    // parse response
+    pageCount++;
+    if (!quiet) console.error('parsing', urlObj.pathname);
+    const html = await res.text();
+    const document = parse5.parse(html);
+
+    // scan for <a> tags and call checkURL for each link in same origin
+    const promises = [];
+    scan(document, 'a', node => {
+      const link = attr(node, 'href');
+      if (!link) return;
+
+      if (!noRecurse) {
+        let linkObj;
+        try { linkObj = new URL(link, href); }
+        catch (err) {
+          urlMap[link] = { url:link, status:'bad link', in:href, error:err.message };
+          return;
+        }
+        if (linkObj.origin === rootOrigin) {
+          promises.push(checkURL(linkObj, href));
+        }
+      }
+      else if(!quiet) console.error('link', link);
+    });
+    await Promise.all(promises);
   }
 }
 

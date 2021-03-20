@@ -29,11 +29,15 @@ const quiet = Deno.args.includes('-q');
 
 const rootOrigin = rootURL.origin;
 
+const client = new Deno.createHttpClient({});
+
 const urlMap = {}; // tracks visited urls
 let pageCount = 0; // counts scanned pages
+let waitCount = 0; // fetch queue depth
+let maxWaitCount = 0;
 
 await checkURL(rootURL); // dum dum dum dum ...
-console.error(pageCount, 'pages scanned.');
+console.error(pageCount, 'pages scanned. Max wait:', maxWaitCount, waitCount);
 
 const result = Object.values(urlMap)
   .filter( value => value.status !== 'OK');
@@ -60,11 +64,15 @@ async function checkURL(urlObj, base) {
 
     // try to make the HTTP request
     let res;
-    try { res = await fetch(href); }
+    waitCount++;
+    if (maxWaitCount < waitCount) { maxWaitCount = waitCount; }
+    try { res = await fetch(href, { client }); }
     catch(err) {
+      waitCount--;
       o.error = err.message;
       return;
     }
+    waitCount--;
     // bail out if fetch was not ok
     if (!res.ok) {
       o.status = res.status;

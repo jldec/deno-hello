@@ -15,6 +15,23 @@
       ],
       "attachSimplePort": 9229,
       "outputCapture": "std"
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "node scanode.mjs",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "args": [
+        "http://localhost:3001/",
+        "-q",
+      ],
+      "program": "${workspaceFolder}/scanode.mjs",
+      "cwd": "${workspaceFolder}",
+      "env": {
+      },
+      "console": "integratedTerminal"
+    },
   ]
 }

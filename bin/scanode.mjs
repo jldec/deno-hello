@@ -1,32 +1,34 @@
-// scan.js
-// deno script to accompany blogpost at
-// https://jldec.me/getting-started-with-deno
+#!/usr/bin/env node
+
+// scanode.mjs
+// Node.js equivalent of Deno scan.js
 //
 // Crawls a website, validating that all the links on the site which
 // point to the same orgin can be fetched.
 //
 // copyright 2021, Jürgen Leschner (github/jldec) - MIT license
 
-import parse5 from 'https://cdn.skypack.dev/parse5?dts';
-import scanurl from './scanurl.mjs';
+import fetch from 'node-fetch';
+import parse5 from 'parse5';
+import scanurl from '../scanurl.mjs';
 
-const usage = `scan v2.0.0
+const usage = `scanode v2.0.0
 
-Usage: deno --allow-net scan.js URL [-R] [-q]
+Usage: node scanode URL [-R] [-q]
 
 URL fully qualified URL to the start page
   -R  scan a single file and log the links in it.
   -q  suppress logging to stderr.
-
-Compiled usage: scan-<arch> URL [-R] [-q]
 `
 
+
+
 let rootURL;
-try { rootURL = new URL(Deno.args[0]); }
+try { rootURL = new URL(process.argv[2]); }
 catch(err) { exit(1, err.message + '\n\n' + usage); }
 
-const noRecurse = Deno.args.includes('-R');
-const quiet = Deno.args.includes('-q');
+const noRecurse = process.argv.includes('-R');
+const quiet = process.argv.includes('-q');
 
 const urlMap = await scanurl(rootURL, noRecurse, quiet, parse5, fetch);
 
@@ -42,5 +44,5 @@ if (result.length) {
 
 function exit(code, msg) {
   console.error(msg);
-  Deno.exit(code);
+  process.exit(code);
 }

@@ -15,17 +15,16 @@ module.exports = {
   ],
 
   sources: [
-  { path: './markdown',
-    writable: true }
+    { path: './markdown', writable: true }
   ],
 
   outputs: [
-  { path: './out',
-    relPaths: true }
+    { path: './out', relPaths: true }
   ],
 
   staticPaths: [
-    { path:'.', depth:1, glob:'**/*.{js,ts}'}
+    { path:'.', depth:1, glob:'**/*.{js,mjs,ts,ico}'},
+    { path:'./bin', depth:1, glob:'**/*.{js,mjs,ts}'}
   ],
 
 };

@@ -1,9 +1,14 @@
 {
-  "name": "deno-hello",
-  "version": "1.0.2",
-  "description": "not a published npm module",
-  "main": "pub-config.js",
+  "name": "scanode",
+  "version": "2.0.0",
+  "description": "ESM module - crawls a website, validating that all the links on the site which point to the same orgin can be fetched.",
+  "main": "scanurl.mjs",
+  "bin": {
+    "scanode": "./bin/scanode.mjs"
+  },
   "dependencies": {
+    "node-fetch": "^2.6.1",
+    "parse5": "^6.0.1",
     "pub-server": "^2.8.0"
   },
   "repository": {
@@ -11,6 +16,7 @@
     "url": "git://github.com/jldec/deno-hello.git"
   },
   "scripts": {
+    "scan": "scanode",
     "pub": "pub",
     "preview": "pub -S out",
     "generate": "rm -r out ; pub -O -E"

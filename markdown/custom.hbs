@@ -1,0 +1,39 @@
+{{{html}}}
+<form id="form">
+{{{fragmentHtml "#form"}}}
+</form>
+
+Output
+<pre id="output"></pre>
+
+Inline Script
+<pre id="script"></pre>
+
+<script type="module" id="code">
+import scanurl from './scanurl.mjs';
+import parse5 from 'https://cdn.skypack.dev/parse5';
+
+const input  = document.getElementById("url");
+const form   = document.getElementById("form");
+const output = document.getElementById("output");
+const script = document.getElementById("script");
+const code   = document.getElementById("code");
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+  output.innerHTML = 'scanning ' + input.value + '...';
+  let str, result;
+  try {
+    result = await scanurl(new URL(input.value), false, true, parse5, fetch);
+    str = JSON.stringify(Object.values(result), null, 2);
+  }
+  catch(err) {
+    str = err.message;
+  }
+  output.innerHTML = str;
+}, false);
+
+input.value = 'https://jldec.uk/';
+script.innerHTML = '&lt;script type="module" id="code">' +
+code.textContent + '&lt;/script>';
+</script>

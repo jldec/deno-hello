@@ -52,17 +52,44 @@ To run the script, call `deno run --allow-net scan.js URL`. E.g.
 $ deno run --allow-net https://deno-hello.jldec.me/scan.js https://jldec.me
 parsing /
 parsing /getting-started-with-deno
-parsing /fun-with-vercel
-parsing /spring-boot-101
-parsing /forays-from-node-to-rust
-parsing /why-the-web-needs-better-html-editing-components
-parsing /about
 parsing /first-steps-using-cloudflare-pages
-parsing /why-serverless-at-the-edge
+parsing /fun-with-vercel
 parsing /a-web-for-everyone
+parsing /running-a-compiled-deno-script-in-a-github-action
+parsing /why-serverless-at-the-edge
+parsing /why-the-web-needs-better-html-editing-components
 parsing /github-actions-101
+parsing /forays-from-node-to-rust
+parsing /about
+parsing /spring-boot-101
 parsing /calling-rust-from-a-cloudflare-worker
 parsing /migrating-from-cjs-to-esm
-13 pages scanned.
+14 pages scanned.
+🎉 no broken links found.
+```
+
+### scanurl and scanode
+
+Crawler logic was extracted into `scanurl.mjs` and published as a non-Deno-specific ESM module on NPM as [scanode](https://www.npmjs.com/package/scanode).
+
+After `npm install -g scanode` you can invoke `scanode` with Node.js instead of Deno, or [run it inside a web browser](https://deno-hello.jldec.me/).
+
+```txt
+$ scanode https://jldec.me
+parsing /
+parsing /getting-started-with-deno
+parsing /spring-boot-101
+parsing /why-serverless-at-the-edge
+parsing /first-steps-using-cloudflare-pages
+parsing /github-actions-101
+parsing /running-a-compiled-deno-script-in-a-github-action
+parsing /calling-rust-from-a-cloudflare-worker
+parsing /a-web-for-everyone
+parsing /migrating-from-cjs-to-esm
+parsing /about
+parsing /why-the-web-needs-better-html-editing-components
+parsing /forays-from-node-to-rust
+parsing /fun-with-vercel
+14 pages scanned.
 🎉 no broken links found.
 ```

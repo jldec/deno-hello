@@ -1,0 +1,21 @@
+{
+  "name": "scanode_example",
+  "version": "0.0.1",
+  "description": "example of calling scanode",
+  "main": "test-scan.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "parse5": "^6.0.1",
+    "scanode": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jldec/deno-hello.git"
+  },
+  "scripts": {
+    "test": "node test-scan.js"
+  },
+  "author": "Jürgen Leschner",
+  "license": "MIT"
+}

@@ -12,7 +12,7 @@ import fetch from 'node-fetch';
 import parse5 from 'parse5';
 import scanurl from '../scanurl.mjs';
 
-const usage = `scanode v2.0.0
+const usage = `scanode v2.0.1
 
 Usage: node scanode URL [-R] [-q]
 

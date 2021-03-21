@@ -1,6 +1,6 @@
 {
   "name": "scanode",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "ESM module - crawls a website, validating that all the links on the site which point to the same orgin can be fetched.",
   "main": "scanurl.mjs",
   "bin": {
@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "parse5": "^6.0.1",
+    "parse5": "^6.0.1"
+  },
+  "devDependencies": {
     "pub-server": "^2.8.0"
   },
   "repository": {

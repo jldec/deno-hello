@@ -10,7 +10,7 @@
 import parse5 from 'https://cdn.skypack.dev/parse5?dts';
 import scanurl from './scanurl.mjs';
 
-const usage = `scan v2.0.0
+const usage = `scan v2.0.1
 
 Usage: deno --allow-net scan.js URL [-R] [-q]
 

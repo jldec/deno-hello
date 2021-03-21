@@ -6,7 +6,7 @@ template: custom
 
 Scripts for [github.com/jldec/deno-hello](https://github.com/jldec/deno-hello/) hosted on [Cloudflare Pages](https://pages.cloudflare.com).
 
-For details see [jldec.me/getting-started-with-deno](https://jldec.me/getting-started-with-deno) and [jldec.me/first-steps-using-cloudflare-pages](https://jldec.me/first-steps-using-cloudflare-pages).
+For details see [jldec.me/getting-started-with-deno](https://jldec.me/getting-started-with-deno) and [jldec.me/extracting-an-esm-module-from-a-deno-script](https://jldec.me/extracting-an-esm-module-from-a-deno-script).
 
 ## Scripts
 

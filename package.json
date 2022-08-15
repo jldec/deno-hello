@@ -11,7 +11,7 @@
     "parse5": "^6.0.1"
   },
   "devDependencies": {
-    "pub-server": "^2.8.0"
+    "pub-server": "^2.10.0"
   },
   "repository": {
     "type": "git",

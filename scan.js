@@ -7,7 +7,7 @@
 //
 // copyright 2021, Jürgen Leschner (github/jldec) - MIT license
 
-import parse5 from 'https://cdn.skypack.dev/parse5?dts';
+import parse5 from 'https://cdn.skypack.dev/parse5@6.0.1';
 import scanurl from './scanurl.mjs';
 
 const usage = `scan v2.0.1
@@ -28,7 +28,7 @@ catch(err) { exit(1, err.message + '\n\n' + usage); }
 const noRecurse = Deno.args.includes('-R');
 const quiet = Deno.args.includes('-q');
 
-const urlMap = await scanurl(rootURL, noRecurse, quiet, parse5, fetch);
+const urlMap = await scanurl(rootURL, noRecurse, quiet, parse5, fetch, {redirect: "error"});
 
 const result = Object.values(urlMap)
   .filter( value => value.status !== 'OK');

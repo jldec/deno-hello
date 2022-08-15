@@ -42,9 +42,14 @@ export default async function scanurl(rootURL, noRecurse, quiet, parse5, fetch, 
       let res;
       try { res = await fetch(href, fetchOpts); }
       catch(err) {
-        o.error = err.message;
+        if (err.message == "Fetch failed: Encountered redirect while redirect mode is set to 'error'" && href.includes('/adobe/')) {
+          o.status = 'OK';
+        } else {
+          o.error = err.message;
+        }
         return;
       }
+
       // bail out if fetch was not ok
       if (!res.ok) {
         o.status = res.status;
@@ -54,7 +59,7 @@ export default async function scanurl(rootURL, noRecurse, quiet, parse5, fetch, 
 
       // check content type
       if (!res.headers.get('content-type').match(/text\/html/i)) {
-        if (!quiet) console.error('not parsing', urlObj.pathname, 'in', base);
+        // if (!quiet) console.error('not parsing', urlObj.pathname, 'in', base);
         return;
       }
 
